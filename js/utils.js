@@ -54,20 +54,20 @@ function seededShuffle(array, rng) {
  */
 function loadConfig() {
   try {
-    console.log('Loading config from localStorage...');
-    const configString = localStorage.getItem('stationAllocationConfig');
-    console.log('Raw config string:', configString ? 'Found' : 'Not found');
+    console.log("Loading config from localStorage...");
+    const configString = localStorage.getItem("stationAllocationConfig");
+    console.log("Raw config string:", configString ? "Found" : "Not found");
 
     if (!configString) {
-      console.log('No config found in localStorage');
+      console.log("No config found in localStorage");
       return null;
     }
 
     const config = JSON.parse(configString);
-    console.log('Parsed config:', config);
+    console.log("Parsed config:", config);
     return config;
   } catch (error) {
-    console.error('Error loading configuration:', error);
+    console.error("Error loading configuration:", error);
     return null;
   }
 }
@@ -79,24 +79,26 @@ function loadConfig() {
  */
 function saveConfig(config) {
   try {
-    console.log('Attempting to save config:', config);
+    console.log("Attempting to save config:", config);
     const configString = JSON.stringify(config);
-    console.log('Stringified config length:', configString.length);
+    console.log("Stringified config length:", configString.length);
 
-    localStorage.setItem('stationAllocationConfig', configString);
+    localStorage.setItem("stationAllocationConfig", configString);
 
     // Verify save
-    const saved = localStorage.getItem('stationAllocationConfig');
+    const saved = localStorage.getItem("stationAllocationConfig");
     if (saved) {
-      console.log('Config successfully saved to localStorage');
+      console.log("Config successfully saved to localStorage");
       return true;
     } else {
-      console.error('Config was not saved - localStorage.getItem returned null');
+      console.error(
+        "Config was not saved - localStorage.getItem returned null",
+      );
       return false;
     }
   } catch (error) {
-    console.error('Error saving configuration:', error);
-    console.error('Error details:', error.message);
+    console.error("Error saving configuration:", error);
+    console.error("Error details:", error.message);
     return false;
   }
 }
@@ -108,8 +110,8 @@ function saveConfig(config) {
  */
 function applyTheme(gradientStart, gradientEnd) {
   const root = document.documentElement;
-  root.style.setProperty('--gradient-start', gradientStart);
-  root.style.setProperty('--gradient-end', gradientEnd);
+  root.style.setProperty("--gradient-start", gradientStart);
+  root.style.setProperty("--gradient-end", gradientEnd);
 }
 
 /**
@@ -119,7 +121,7 @@ function applyTheme(gradientStart, gradientEnd) {
  */
 function getLogoBrightness(hex) {
   // Remove # if present
-  hex = hex.replace('#', '');
+  hex = hex.replace("#", "");
 
   // Convert to RGB
   const r = parseInt(hex.substr(0, 2), 16);
@@ -131,7 +133,7 @@ function getLogoBrightness(hex) {
 
   // If luminance is high (light background), return 'dark' for dark logo
   // If luminance is low (dark background), return 'light' for light logo
-  return luminance > 0.6 ? 'dark' : 'light';
+  return luminance > 0.6 ? "dark" : "light";
 }
 
 /**
@@ -140,7 +142,7 @@ function getLogoBrightness(hex) {
  * @returns {Array} - Array of competitor objects
  */
 function parseCSV(content) {
-  const lines = content.trim().split('\n');
+  const lines = content.trim().split("\n");
   const competitors = [];
 
   // Skip header row
@@ -148,12 +150,12 @@ function parseCSV(content) {
     const line = lines[i].trim();
     if (!line) continue;
 
-    const parts = line.split(',').map(p => p.trim());
+    const parts = line.split(",").map((p) => p.trim());
     if (parts.length >= 3) {
       competitors.push({
         firstName: parts[0],
         lastName: parts[1],
-        countryCode: parts[2]
+        countryCode: parts[2],
       });
     }
   }
@@ -167,19 +169,19 @@ function parseCSV(content) {
  * @returns {Array} - Array of competitor objects
  */
 function parseTXT(content) {
-  const lines = content.trim().split('\n');
+  const lines = content.trim().split("\n");
   const competitors = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
-    if (!line || line.startsWith('#')) continue; // Skip empty lines and comments
+    if (!line || line.startsWith("#")) continue; // Skip empty lines and comments
 
     const parts = line.split(/\s+/);
     if (parts.length >= 3) {
       competitors.push({
         firstName: parts[0],
-        lastName: parts.slice(1, -1).join(' '), // Handle multi-word last names
-        countryCode: parts[parts.length - 1]
+        lastName: parts.slice(1, -1).join(" "), // Handle multi-word last names
+        countryCode: parts[parts.length - 1],
       });
     }
   }
@@ -194,34 +196,46 @@ function parseTXT(content) {
  * @param {string} gradientEnd - Optional gradient end color
  * @returns {string} - SVG markup
  */
-function generateBuildingBlocks(position, gradientStart = '#72d0eb', gradientEnd = '#0084ad') {
+function generateBuildingBlocks(
+  position,
+  gradientStart = "#72d0eb",
+  gradientEnd = "#0084ad",
+) {
   const cubes = [];
   const cubeSize = 120; // Much bigger cubes
 
   // Helper function to darken a hex color
   function darkenColor(hex, percent) {
-    const num = parseInt(hex.replace('#', ''), 16);
+    const num = parseInt(hex.replace("#", ""), 16);
     const r = Math.max(0, Math.floor((num >> 16) * (1 - percent)));
-    const g = Math.max(0, Math.floor(((num >> 8) & 0x00FF) * (1 - percent)));
-    const b = Math.max(0, Math.floor((num & 0x0000FF) * (1 - percent)));
-    return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
+    const g = Math.max(0, Math.floor(((num >> 8) & 0x00ff) * (1 - percent)));
+    const b = Math.max(0, Math.floor((num & 0x0000ff) * (1 - percent)));
+    return "#" + ((r << 16) | (g << 8) | b).toString(16).padStart(6, "0");
   }
 
   // Create isometric cube helper function
   function createIsometricCube(x, y, size, colorIndex) {
     const baseColor = colorIndex === 0 ? gradientStart : gradientEnd;
     const colors = [
-      { top: baseColor, left: darkenColor(baseColor, 0.15), right: darkenColor(baseColor, 0.25) },
-      { top: baseColor, left: darkenColor(baseColor, 0.15), right: darkenColor(baseColor, 0.25) }
+      {
+        top: baseColor,
+        left: darkenColor(baseColor, 0.15),
+        right: darkenColor(baseColor, 0.25),
+      },
+      {
+        top: baseColor,
+        left: darkenColor(baseColor, 0.15),
+        right: darkenColor(baseColor, 0.25),
+      },
     ];
 
     const color = colors[colorIndex % colors.length];
     const h = size / 2;
 
     // Isometric cube faces
-    const topPoints = `${x},${y} ${x + h},${y - h/2} ${x + h*2},${y} ${x + h},${y + h/2}`;
-    const leftPoints = `${x},${y} ${x + h},${y + h/2} ${x + h},${y + h/2 + h} ${x},${y + h}`;
-    const rightPoints = `${x + h},${y + h/2} ${x + h*2},${y} ${x + h*2},${y + h} ${x + h},${y + h/2 + h}`;
+    const topPoints = `${x},${y} ${x + h},${y - h / 2} ${x + h * 2},${y} ${x + h},${y + h / 2}`;
+    const leftPoints = `${x},${y} ${x + h},${y + h / 2} ${x + h},${y + h / 2 + h} ${x},${y + h}`;
+    const rightPoints = `${x + h},${y + h / 2} ${x + h * 2},${y} ${x + h * 2},${y + h} ${x + h},${y + h / 2 + h}`;
 
     return `
       <g opacity="0.3">
@@ -240,49 +254,60 @@ function generateBuildingBlocks(position, gradientStart = '#72d0eb', gradientEnd
     pattern.forEach((row, rowIndex) => {
       row.forEach((colorIndex, colIndex) => {
         if (colorIndex !== null) {
-          const x = baseX + (colIndex * h * 2);
-          const y = baseY + (rowIndex * h) - (colIndex * h / 2);
+          const x = baseX + colIndex * h * 2;
+          const y = baseY + rowIndex * h - (colIndex * h) / 2;
           structure.push(createIsometricCube(x, y, cubeSize, colorIndex));
         }
       });
     });
 
-    return structure.join('');
+    return structure.join("");
   }
 
   // Wider, more balanced patterns (avoiding tall vertical towers)
-  const structures = position === 'left'
-    ? [
-        // Structure 1: L-shape
-        { x: 0, y: 150, pattern: [
-          [0, 1],
-          [0, null]
-        ]},
-        // Structure 2: Horizontal blocks
-        { x: 0, y: 400, pattern: [
-          [1, 0, 1]
-        ]}
-      ]
-    : [
-        // Structure 1: Pyramid
-        { x: 20, y: 150, pattern: [
-          [null, 0],
-          [1, 0]
-        ]},
-        // Structure 2: Wide block
-        { x: 0, y: 400, pattern: [
-          [0, 1],
-          [1, 0]
-        ]}
-      ];
+  const structures =
+    position === "left"
+      ? [
+          // Structure 1: L-shape
+          {
+            x: 0,
+            y: 150,
+            pattern: [
+              [0, 1],
+              [0, null],
+            ],
+          },
+          // Structure 2: Horizontal blocks
+          { x: 0, y: 400, pattern: [[1, 0, 1]] },
+        ]
+      : [
+          // Structure 1: Pyramid
+          {
+            x: 20,
+            y: 150,
+            pattern: [
+              [null, 0],
+              [1, 0],
+            ],
+          },
+          // Structure 2: Wide block
+          {
+            x: 0,
+            y: 400,
+            pattern: [
+              [0, 1],
+              [1, 0],
+            ],
+          },
+        ];
 
-  structures.forEach(struct => {
+  structures.forEach((struct) => {
     cubes.push(createCubeStructure(struct.x, struct.y, struct.pattern));
   });
 
   return `
     <svg width="350" height="650" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 650">
-      ${cubes.join('')}
+      ${cubes.join("")}
     </svg>
   `;
 }
@@ -293,13 +318,21 @@ function generateBuildingBlocks(position, gradientStart = '#72d0eb', gradientEnd
  * @param {string} gradientEnd - Optional gradient end color
  */
 function createBuildingBlocksBackground(gradientStart, gradientEnd) {
-  const leftBlocks = document.createElement('div');
-  leftBlocks.className = 'building-blocks-left';
-  leftBlocks.innerHTML = generateBuildingBlocks('left', gradientStart, gradientEnd);
+  const leftBlocks = document.createElement("div");
+  leftBlocks.className = "building-blocks-left";
+  leftBlocks.innerHTML = generateBuildingBlocks(
+    "left",
+    gradientStart,
+    gradientEnd,
+  );
 
-  const rightBlocks = document.createElement('div');
-  rightBlocks.className = 'building-blocks-right';
-  rightBlocks.innerHTML = generateBuildingBlocks('right', gradientStart, gradientEnd);
+  const rightBlocks = document.createElement("div");
+  rightBlocks.className = "building-blocks-right";
+  rightBlocks.innerHTML = generateBuildingBlocks(
+    "right",
+    gradientStart,
+    gradientEnd,
+  );
 
   document.body.insertBefore(leftBlocks, document.body.firstChild);
   document.body.insertBefore(rightBlocks, document.body.firstChild);
@@ -311,14 +344,22 @@ function createBuildingBlocksBackground(gradientStart, gradientEnd) {
  * @param {string} gradientEnd - Gradient end color
  */
 function updateBuildingBlocksColors(gradientStart, gradientEnd) {
-  const leftBlocks = document.querySelector('.building-blocks-left');
-  const rightBlocks = document.querySelector('.building-blocks-right');
+  const leftBlocks = document.querySelector(".building-blocks-left");
+  const rightBlocks = document.querySelector(".building-blocks-right");
 
   if (leftBlocks) {
-    leftBlocks.innerHTML = generateBuildingBlocks('left', gradientStart, gradientEnd);
+    leftBlocks.innerHTML = generateBuildingBlocks(
+      "left",
+      gradientStart,
+      gradientEnd,
+    );
   }
   if (rightBlocks) {
-    rightBlocks.innerHTML = generateBuildingBlocks('right', gradientStart, gradientEnd);
+    rightBlocks.innerHTML = generateBuildingBlocks(
+      "right",
+      gradientStart,
+      gradientEnd,
+    );
   }
 }
 
@@ -328,13 +369,13 @@ function updateBuildingBlocksColors(gradientStart, gradientEnd) {
 
 // Create modal container if it doesn't exist
 function createModalContainer() {
-  if (document.getElementById('custom-modal')) {
-    return document.getElementById('custom-modal');
+  if (document.getElementById("custom-modal")) {
+    return document.getElementById("custom-modal");
   }
 
-  const modal = document.createElement('div');
-  modal.id = 'custom-modal';
-  modal.className = 'modal-overlay';
+  const modal = document.createElement("div");
+  modal.id = "custom-modal";
+  modal.className = "modal-overlay";
   document.body.appendChild(modal);
   return modal;
 }
@@ -346,22 +387,22 @@ function createModalContainer() {
  * @param {string} title - Optional title
  * @returns {Promise} - Resolves when user clicks OK
  */
-function showAlert(message, type = 'info', title = '') {
+function showAlert(message, type = "info", title = "") {
   return new Promise((resolve) => {
     const modal = createModalContainer();
 
     const icons = {
-      success: '✓',
-      error: '✕',
-      warning: '⚠',
-      info: 'ℹ'
+      success: "✓",
+      error: "✕",
+      warning: "⚠",
+      info: "ℹ",
     };
 
     const titles = {
-      success: title || 'Success',
-      error: title || 'Error',
-      warning: title || 'Warning',
-      info: title || 'Information'
+      success: title || "Success",
+      error: title || "Error",
+      warning: title || "Warning",
+      info: title || "Information",
     };
 
     modal.innerHTML = `
@@ -381,16 +422,16 @@ function showAlert(message, type = 'info', title = '') {
       </div>
     `;
 
-    modal.classList.add('show');
+    modal.classList.add("show");
 
     // Handle OK button click
-    const okButton = modal.querySelector('#modal-ok-btn');
+    const okButton = modal.querySelector("#modal-ok-btn");
     const closeHandler = () => {
-      modal.classList.remove('show');
+      modal.classList.remove("show");
       resolve();
     };
 
-    okButton.addEventListener('click', closeHandler);
+    okButton.addEventListener("click", closeHandler);
 
     // Close on overlay click
     modal.onclick = (e) => {
@@ -409,7 +450,12 @@ function showAlert(message, type = 'info', title = '') {
  * @param {string} cancelText - Text for cancel button
  * @returns {Promise<boolean>} - Resolves with true/false based on user choice
  */
-function showConfirm(message, title = 'Confirm', confirmText = 'Confirm', cancelText = 'Cancel') {
+function showConfirm(
+  message,
+  title = "Confirm",
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+) {
   return new Promise((resolve) => {
     const modal = createModalContainer();
 
@@ -435,28 +481,28 @@ function showConfirm(message, title = 'Confirm', confirmText = 'Confirm', cancel
       </div>
     `;
 
-    modal.classList.add('show');
+    modal.classList.add("show");
 
     // Get button elements
-    const confirmButton = modal.querySelector('#modal-confirm-btn');
-    const cancelButton = modal.querySelector('#modal-cancel-btn');
+    const confirmButton = modal.querySelector("#modal-confirm-btn");
+    const cancelButton = modal.querySelector("#modal-cancel-btn");
 
     // Handle confirm button click
-    confirmButton.addEventListener('click', () => {
-      modal.classList.remove('show');
+    confirmButton.addEventListener("click", () => {
+      modal.classList.remove("show");
       resolve(true);
     });
 
     // Handle cancel button click
-    cancelButton.addEventListener('click', () => {
-      modal.classList.remove('show');
+    cancelButton.addEventListener("click", () => {
+      modal.classList.remove("show");
       resolve(false);
     });
 
     // Close on overlay click (counts as cancel)
     modal.onclick = (e) => {
       if (e.target === modal) {
-        modal.classList.remove('show');
+        modal.classList.remove("show");
         resolve(false);
       }
     };
@@ -464,7 +510,7 @@ function showConfirm(message, title = 'Confirm', confirmText = 'Confirm', cancel
 }
 
 // Export functions for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     SeededRandom,
     hashString,
@@ -478,6 +524,6 @@ if (typeof module !== 'undefined' && module.exports) {
     generateBuildingBlocks,
     createBuildingBlocksBackground,
     showAlert,
-    showConfirm
+    showConfirm,
   };
 }

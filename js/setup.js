@@ -6,12 +6,13 @@ let uploadedLogoPath = null;
 function initializeSetup() {
   const existingConfig = loadConfig();
 
-  let gradientStart = '#72d0eb';
-  let gradientEnd = '#0084ad';
+  let gradientStart = "#72d0eb";
+  let gradientEnd = "#0084ad";
 
   if (existingConfig) {
     populateFormWithConfig(existingConfig);
-    if (existingConfig.gradientStart) gradientStart = existingConfig.gradientStart;
+    if (existingConfig.gradientStart)
+      gradientStart = existingConfig.gradientStart;
     if (existingConfig.gradientEnd) gradientEnd = existingConfig.gradientEnd;
   }
 
@@ -23,23 +24,26 @@ function initializeSetup() {
 // Form Population
 function populateFormWithConfig(config) {
   if (config.gradientStart) {
-    document.getElementById('gradient-start-hex').value = config.gradientStart;
-    document.getElementById('gradient-start-preview').style.background = config.gradientStart;
+    document.getElementById("gradient-start-hex").value = config.gradientStart;
+    document.getElementById("gradient-start-preview").style.background =
+      config.gradientStart;
   }
   if (config.gradientEnd) {
-    document.getElementById('gradient-end-hex').value = config.gradientEnd;
-    document.getElementById('gradient-end-preview').style.background = config.gradientEnd;
+    document.getElementById("gradient-end-hex").value = config.gradientEnd;
+    document.getElementById("gradient-end-preview").style.background =
+      config.gradientEnd;
   }
   if (config.logoPath) {
     uploadedLogoPath = config.logoPath;
-    document.getElementById('logo-name').textContent = `Current logo loaded`;
-    document.getElementById('logo-name').classList.add('loaded');
+    document.getElementById("logo-name").textContent = `Current logo loaded`;
+    document.getElementById("logo-name").classList.add("loaded");
     updateLogoPreview(config.logoPath);
   }
   if (config.competitors) {
     uploadedCompetitors = config.competitors;
-    document.getElementById('file-name').textContent = `${config.competitors.length} competitors loaded`;
-    document.getElementById('file-name').classList.add('loaded');
+    document.getElementById("file-name").textContent =
+      `${config.competitors.length} competitors loaded`;
+    document.getElementById("file-name").classList.add("loaded");
   }
 
   updateColorPreview();
@@ -47,23 +51,27 @@ function populateFormWithConfig(config) {
 
 function setupEventListeners() {
   setupColorPicker();
-  document.getElementById('competitors-file').addEventListener('change', handleFileUpload);
-  document.getElementById('logo-file').addEventListener('change', handleLogoUpload);
+  document
+    .getElementById("competitors-file")
+    .addEventListener("change", handleFileUpload);
+  document
+    .getElementById("logo-file")
+    .addEventListener("change", handleLogoUpload);
 }
 
 // Custom Color Picker
 function setupColorPicker() {
-  const modal = document.getElementById('color-picker-modal');
-  const canvas = document.getElementById('color-canvas');
-  const ctx = canvas.getContext('2d');
-  const canvasContainer = document.getElementById('color-canvas-container');
-  const cursor = document.getElementById('color-cursor');
-  const hueSlider = document.getElementById('hue-slider');
-  const hueCursor = document.getElementById('hue-cursor');
-  const colorCurrent = document.getElementById('color-current');
-  const colorHexDisplay = document.getElementById('color-hex-display');
-  const cancelBtn = document.getElementById('color-cancel');
-  const okBtn = document.getElementById('color-ok');
+  const modal = document.getElementById("color-picker-modal");
+  const canvas = document.getElementById("color-canvas");
+  const ctx = canvas.getContext("2d");
+  const canvasContainer = document.getElementById("color-canvas-container");
+  const cursor = document.getElementById("color-cursor");
+  const hueSlider = document.getElementById("hue-slider");
+  const hueCursor = document.getElementById("hue-cursor");
+  const colorCurrent = document.getElementById("color-current");
+  const colorHexDisplay = document.getElementById("color-hex-display");
+  const cancelBtn = document.getElementById("color-cancel");
+  const okBtn = document.getElementById("color-ok");
 
   let currentType = null; // 'start' or 'end'
   let currentHue = 195; // Default blue hue for #72d0eb
@@ -80,7 +88,7 @@ function setupColorPicker() {
   function drawCanvas() {
     for (let row = 0; row < size; row++) {
       const gradient = ctx.createLinearGradient(0, row, size, row);
-      const v = 1 - (row / size);
+      const v = 1 - row / size;
       const color0 = hsvToRgb(currentHue, 0, v);
       const color1 = hsvToRgb(currentHue, 1, v);
 
@@ -127,11 +135,11 @@ function setupColorPicker() {
     updateHueCursor();
     updatePreview();
 
-    modal.classList.add('show');
+    modal.classList.add("show");
   }
 
   function closeModal() {
-    modal.classList.remove('show');
+    modal.classList.remove("show");
     currentType = null;
   }
 
@@ -151,17 +159,17 @@ function setupColorPicker() {
     closeModal();
   }
 
-  canvasContainer.addEventListener('mousedown', (e) => {
+  canvasContainer.addEventListener("mousedown", (e) => {
     isDraggingCanvas = true;
     handleCanvasInteraction(e);
   });
 
-  document.addEventListener('mousemove', (e) => {
+  document.addEventListener("mousemove", (e) => {
     if (isDraggingCanvas) handleCanvasInteraction(e);
     if (isDraggingHue) handleHueInteraction(e);
   });
 
-  document.addEventListener('mouseup', () => {
+  document.addEventListener("mouseup", () => {
     isDraggingCanvas = false;
     isDraggingHue = false;
   });
@@ -172,13 +180,13 @@ function setupColorPicker() {
     let y = Math.max(0, Math.min(e.clientY - rect.top, size));
 
     currentSaturation = x / size;
-    currentValue = 1 - (y / size);
+    currentValue = 1 - y / size;
 
     updateCanvasCursor();
     updatePreview();
   }
 
-  hueSlider.addEventListener('mousedown', (e) => {
+  hueSlider.addEventListener("mousedown", (e) => {
     isDraggingHue = true;
     handleHueInteraction(e);
   });
@@ -193,23 +201,27 @@ function setupColorPicker() {
     updatePreview();
   }
 
-  document.getElementById('gradient-start-preview').addEventListener('click', () => openModal('start'));
-  document.getElementById('gradient-end-preview').addEventListener('click', () => openModal('end'));
+  document
+    .getElementById("gradient-start-preview")
+    .addEventListener("click", () => openModal("start"));
+  document
+    .getElementById("gradient-end-preview")
+    .addEventListener("click", () => openModal("end"));
 
-  cancelBtn.addEventListener('click', closeModal);
-  okBtn.addEventListener('click', applyColor);
+  cancelBtn.addEventListener("click", closeModal);
+  okBtn.addEventListener("click", applyColor);
 
-  modal.addEventListener('click', (e) => {
+  modal.addEventListener("click", (e) => {
     if (e.target === modal) closeModal();
   });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
   });
 
-  ['start', 'end'].forEach(type => {
+  ["start", "end"].forEach((type) => {
     const hexInput = document.getElementById(`gradient-${type}-hex`);
-    hexInput.addEventListener('input', (e) => {
+    hexInput.addEventListener("input", (e) => {
       const hex = e.target.value.trim();
       if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
         const preview = document.getElementById(`gradient-${type}-preview`);
@@ -222,19 +234,26 @@ function setupColorPicker() {
 
 // Color Conversion Utilities
 function rgbToHex(r, g, b) {
-  return '#' + [r, g, b].map(x => {
-    const hex = x.toString(16);
-    return hex.length === 1 ? '0' + hex : hex;
-  }).join('');
+  return (
+    "#" +
+    [r, g, b]
+      .map((x) => {
+        const hex = x.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+      })
+      .join("")
+  );
 }
 
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : { r: 0, g: 0, b: 0 };
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : { r: 0, g: 0, b: 0 };
 }
 
 // Convert HSV (Hue: 0-360, Saturation: 0-1, Value: 0-1) to RGB (0-255)
@@ -243,26 +262,40 @@ function hsvToRgb(h, s, v) {
   const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
   const m = v - c;
 
-  let r = 0, g = 0, b = 0;
+  let r = 0,
+    g = 0,
+    b = 0;
 
   if (h >= 0 && h < 60) {
-    r = c; g = x; b = 0;
+    r = c;
+    g = x;
+    b = 0;
   } else if (h >= 60 && h < 120) {
-    r = x; g = c; b = 0;
+    r = x;
+    g = c;
+    b = 0;
   } else if (h >= 120 && h < 180) {
-    r = 0; g = c; b = x;
+    r = 0;
+    g = c;
+    b = x;
   } else if (h >= 180 && h < 240) {
-    r = 0; g = x; b = c;
+    r = 0;
+    g = x;
+    b = c;
   } else if (h >= 240 && h < 300) {
-    r = x; g = 0; b = c;
+    r = x;
+    g = 0;
+    b = c;
   } else if (h >= 300 && h < 360) {
-    r = c; g = 0; b = x;
+    r = c;
+    g = 0;
+    b = x;
   }
 
   return {
     r: Math.round((r + m) * 255),
     g: Math.round((g + m) * 255),
-    b: Math.round((b + m) * 255)
+    b: Math.round((b + m) * 255),
   };
 }
 
@@ -284,9 +317,9 @@ function rgbToHsv(r, g, b) {
     if (max === r) {
       h = 60 * (((g - b) / delta) % 6);
     } else if (max === g) {
-      h = 60 * (((b - r) / delta) + 2);
+      h = 60 * ((b - r) / delta + 2);
     } else {
-      h = 60 * (((r - g) / delta) + 4);
+      h = 60 * ((r - g) / delta + 4);
     }
   }
 
@@ -296,10 +329,10 @@ function rgbToHsv(r, g, b) {
 }
 
 function updateColorPreview() {
-  const startColor = document.getElementById('gradient-start-hex').value;
-  const endColor = document.getElementById('gradient-end-hex').value;
+  const startColor = document.getElementById("gradient-start-hex").value;
+  const endColor = document.getElementById("gradient-end-hex").value;
 
-  const preview = document.getElementById('color-preview');
+  const preview = document.getElementById("color-preview");
   preview.style.background = `linear-gradient(135deg, ${startColor} 0%, ${endColor} 100%)`;
 
   document.body.style.background = `linear-gradient(135deg, ${startColor} 0%, ${endColor} 100%)`;
@@ -311,36 +344,52 @@ async function handleFileUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
 
-  const fileExtension = file.name.split('.').pop().toLowerCase();
+  const fileExtension = file.name.split(".").pop().toLowerCase();
 
   try {
     const content = await readFileContent(file);
 
-    if (fileExtension === 'csv') {
+    if (fileExtension === "csv") {
       uploadedCompetitors = parseCSV(content);
-    } else if (fileExtension === 'txt') {
+    } else if (fileExtension === "txt") {
       uploadedCompetitors = parseTXT(content);
-    } else if (fileExtension === 'xlsx') {
-      await showAlert('Please convert XLSX to CSV format for now. XLSX support coming soon!', 'info', 'XLSX Not Supported');
+    } else if (fileExtension === "xlsx") {
+      await showAlert(
+        "Please convert XLSX to CSV format for now. XLSX support coming soon!",
+        "info",
+        "XLSX Not Supported",
+      );
       return;
     } else {
-      await showAlert('Unsupported file format. Please use CSV or TXT files.', 'error', 'Invalid File Type');
+      await showAlert(
+        "Unsupported file format. Please use CSV or TXT files.",
+        "error",
+        "Invalid File Type",
+      );
       return;
     }
 
     if (uploadedCompetitors.length === 0) {
-      await showAlert('No valid competitors found in the file. Please check the format.', 'warning', 'No Competitors Found');
+      await showAlert(
+        "No valid competitors found in the file. Please check the format.",
+        "warning",
+        "No Competitors Found",
+      );
       return;
     }
 
-    const fileNameDisplay = document.getElementById('file-name');
+    const fileNameDisplay = document.getElementById("file-name");
     fileNameDisplay.textContent = `✓ ${uploadedCompetitors.length} competitors loaded`;
-    fileNameDisplay.classList.add('loaded');
+    fileNameDisplay.classList.add("loaded");
 
-    console.log('Loaded competitors:', uploadedCompetitors);
+    console.log("Loaded competitors:", uploadedCompetitors);
   } catch (error) {
-    console.error('Error reading file:', error);
-    await showAlert('Error reading file. Please check the file format.', 'error', 'File Error');
+    console.error("Error reading file:", error);
+    await showAlert(
+      "Error reading file. Please check the file format.",
+      "error",
+      "File Error",
+    );
   }
 }
 
@@ -349,35 +398,38 @@ async function handleLogoUpload(event) {
   if (!file) return;
 
   const fileName = file.name;
-  const fileExtension = fileName.split('.').pop().toLowerCase();
+  const fileExtension = fileName.split(".").pop().toLowerCase();
 
-  if (!['png', 'jpg', 'jpeg', 'svg', 'gif'].includes(fileExtension)) {
-    await showAlert('Please upload a valid image file (PNG, JPG, SVG, GIF)', 'error', 'Invalid Image Type');
+  if (!["png", "jpg", "jpeg", "svg", "gif"].includes(fileExtension)) {
+    await showAlert(
+      "Please upload a valid image file (PNG, JPG, SVG, GIF)",
+      "error",
+      "Invalid Image Type",
+    );
     return;
   }
 
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = function (e) {
     uploadedLogoPath = e.target.result;
-    document.getElementById('logo-name').textContent = `Selected: ${fileName}`;
+    document.getElementById("logo-name").textContent = `Selected: ${fileName}`;
     updateLogoPreview(uploadedLogoPath);
   };
   reader.readAsDataURL(file);
 }
 
 function updateLogoPreview(logoPath) {
-  const preview = document.getElementById('logo-preview');
+  const preview = document.getElementById("logo-preview");
 
   if (logoPath) {
     preview.innerHTML = `<img src="${logoPath}" alt="Logo Preview">`;
   } else {
-    preview.innerHTML = '<span class="logo-preview-placeholder">No logo uploaded</span>';
+    preview.innerHTML =
+      '<span class="logo-preview-placeholder">No logo uploaded</span>';
   }
 }
 
-
 // Template & Configuration
-
 
 function readFileContent(file) {
   return new Promise((resolve, reject) => {
@@ -390,41 +442,57 @@ function readFileContent(file) {
 
 async function downloadTemplate() {
   try {
-    const response = await fetch('data/sample-template.csv');
+    const response = await fetch("data/sample-template.csv");
 
     if (!response.ok) {
-      throw new Error('Failed to fetch template file');
+      throw new Error("Failed to fetch template file");
     }
 
     const csvContent = await response.text();
-    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const blob = new Blob([csvContent], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'sample-template.csv';
+    a.download = "sample-template.csv";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
 
-    await showAlert('Template downloaded successfully!', 'success', 'Download Complete');
+    await showAlert(
+      "Template downloaded successfully!",
+      "success",
+      "Download Complete",
+    );
   } catch (error) {
-    console.error('Error downloading template:', error);
-    await showAlert('Error downloading template. Please check the console.', 'error', 'Download Failed');
+    console.error("Error downloading template:", error);
+    await showAlert(
+      "Error downloading template. Please check the console.",
+      "error",
+      "Download Failed",
+    );
   }
 }
 
 async function saveConfiguration() {
-  const gradientStart = document.getElementById('gradient-start-hex').value;
-  const gradientEnd = document.getElementById('gradient-end-hex').value;
+  const gradientStart = document.getElementById("gradient-start-hex").value;
+  const gradientEnd = document.getElementById("gradient-end-hex").value;
 
   if (!gradientStart || !gradientEnd) {
-    await showAlert('Please select gradient colors', 'warning', 'Missing Colors');
+    await showAlert(
+      "Please select gradient colors",
+      "warning",
+      "Missing Colors",
+    );
     return;
   }
 
   if (uploadedCompetitors.length === 0) {
-    await showAlert('Please upload a competitors file before saving', 'warning', 'Missing Competitors');
+    await showAlert(
+      "Please upload a competitors file before saving",
+      "warning",
+      "Missing Competitors",
+    );
     return;
   }
 
@@ -433,71 +501,80 @@ async function saveConfiguration() {
     gradientEnd,
     competitors: uploadedCompetitors,
     logoPath: uploadedLogoPath,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
   };
 
   const saveSuccess = saveConfig(config);
-  console.log('Save result:', saveSuccess);
+  console.log("Save result:", saveSuccess);
 
   if (!saveSuccess) {
     await showAlert(
-      'Failed to save configuration. This might be due to browser security settings with local files.<br><br>Please try running this on a web server instead.',
-      'error',
-      'Save Failed'
+      "Failed to save configuration. This might be due to browser security settings with local files.<br><br>Please try running this on a web server instead.",
+      "error",
+      "Save Failed",
     );
     return;
   }
 
   const verifyConfig = loadConfig();
-  console.log('Verification config:', verifyConfig);
+  console.log("Verification config:", verifyConfig);
 
   if (!verifyConfig) {
-    await showAlert('Error verifying saved configuration. Please try again.', 'error', 'Verification Failed');
+    await showAlert(
+      "Error verifying saved configuration. Please try again.",
+      "error",
+      "Verification Failed",
+    );
     return;
   }
 
   await showAlert(
     `Configuration saved successfully!<br><br><strong>${uploadedCompetitors.length} competitors</strong> loaded and ready for allocation.`,
-    'success',
-    'Configuration Saved'
+    "success",
+    "Configuration Saved",
   );
 
-  window.location.href = 'index.html';
+  window.location.href = "index.html";
 }
 
 async function resetConfiguration() {
   const confirmed = await showConfirm(
-    'Are you sure you want to reset all configuration? This will clear all saved settings and cannot be undone.',
-    'Reset Configuration',
-    'Reset',
-    'Cancel'
+    "Are you sure you want to reset all configuration? This will clear all saved settings and cannot be undone.",
+    "Reset Configuration",
+    "Reset",
+    "Cancel",
   );
 
   if (confirmed) {
-    localStorage.removeItem('stationAllocationConfig');
+    localStorage.removeItem("stationAllocationConfig");
 
-    const defaultGradientStart = '#72d0eb';
-    const defaultGradientEnd = '#0084ad';
+    const defaultGradientStart = "#72d0eb";
+    const defaultGradientEnd = "#0084ad";
 
-    document.getElementById('gradient-start').value = defaultGradientStart;
-    document.getElementById('gradient-start-hex').value = defaultGradientStart;
-    document.getElementById('gradient-end').value = defaultGradientEnd;
-    document.getElementById('gradient-end-hex').value = defaultGradientEnd;
+    document.getElementById("gradient-start").value = defaultGradientStart;
+    document.getElementById("gradient-start-hex").value = defaultGradientStart;
+    document.getElementById("gradient-end").value = defaultGradientEnd;
+    document.getElementById("gradient-end-hex").value = defaultGradientEnd;
 
     uploadedCompetitors = [];
     uploadedLogoPath = null;
 
-    document.getElementById('file-name').textContent = 'No file selected';
-    document.getElementById('file-name').classList.remove('loaded');
-    document.getElementById('logo-name').textContent = 'No logo selected. Default logo will be used based on gradient colors.';
+    document.getElementById("file-name").textContent = "No file selected";
+    document.getElementById("file-name").classList.remove("loaded");
+    document.getElementById("logo-name").textContent =
+      "No logo selected. Default logo will be used based on gradient colors.";
 
-    document.getElementById('competitors-file').value = '';
-    document.getElementById('logo-file').value = '';
+    document.getElementById("competitors-file").value = "";
+    document.getElementById("logo-file").value = "";
 
     updateColorPreview();
     updateLogoPreview(null);
 
-    await showAlert('Configuration has been reset to defaults', 'success', 'Reset Complete');
+    await showAlert(
+      "Configuration has been reset to defaults",
+      "success",
+      "Reset Complete",
+    );
   }
 }
 
@@ -506,17 +583,17 @@ async function goToAllocation() {
 
   if (!config || !config.competitors || config.competitors.length === 0) {
     const confirmed = await showConfirm(
-      'No configuration found. Would you like to save the current settings first?',
-      'Configuration Required',
-      'Save & Continue',
-      'Cancel'
+      "No configuration found. Would you like to save the current settings first?",
+      "Configuration Required",
+      "Save & Continue",
+      "Cancel",
     );
 
     if (confirmed) {
       await saveConfiguration();
     }
   } else {
-    window.location.href = 'index.html';
+    window.location.href = "index.html";
   }
 }
 
@@ -524,16 +601,20 @@ async function exportConfig() {
   const config = loadConfig();
 
   if (!config) {
-    await showAlert('No configuration to export. Please set up first.', 'warning', 'No Configuration');
+    await showAlert(
+      "No configuration to export. Please set up first.",
+      "warning",
+      "No Configuration",
+    );
     return;
   }
 
   const jsonContent = JSON.stringify(config, null, 2);
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, -5);
 
-  const blob = new Blob([jsonContent], { type: 'application/json' });
+  const blob = new Blob([jsonContent], { type: "application/json" });
   const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
   a.download = `config-${timestamp}.json`;
   document.body.appendChild(a);
@@ -541,13 +622,17 @@ async function exportConfig() {
   document.body.removeChild(a);
   window.URL.revokeObjectURL(url);
 
-  await showAlert('Configuration exported successfully!', 'success', 'Export Complete');
+  await showAlert(
+    "Configuration exported successfully!",
+    "success",
+    "Export Complete",
+  );
 }
 
 async function importConfig() {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.json';
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
 
   input.onchange = async (e) => {
     const file = e.target.files[0];
@@ -558,7 +643,7 @@ async function importConfig() {
       const config = JSON.parse(content);
 
       if (!config.competitors || !Array.isArray(config.competitors)) {
-        throw new Error('Invalid configuration format');
+        throw new Error("Invalid configuration format");
       }
 
       saveConfig(config);
@@ -566,16 +651,20 @@ async function importConfig() {
 
       await showAlert(
         `Configuration imported successfully!<br><strong>${config.competitors.length} competitors</strong> loaded.`,
-        'success',
-        'Import Complete'
+        "success",
+        "Import Complete",
       );
     } catch (error) {
-      console.error('Import error:', error);
-      await showAlert('Error importing configuration. Invalid JSON file.', 'error', 'Import Failed');
+      console.error("Import error:", error);
+      await showAlert(
+        "Error importing configuration. Invalid JSON file.",
+        "error",
+        "Import Failed",
+      );
     }
   };
 
   input.click();
 }
 
-document.addEventListener('DOMContentLoaded', initializeSetup);
+document.addEventListener("DOMContentLoaded", initializeSetup);

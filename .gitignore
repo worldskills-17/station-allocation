@@ -34,3 +34,22 @@ npm-debug.log*
 *.temp
 *.bak
 *.old
+
+# Build and distribution
+dist/
+build/
+*.min.js
+*.min.css
+
+# Package lock files
+package-lock.json
+yarn.lock
+
+# IDE specific files
+.vscode/settings.json
+.vscode/launch.json
+*.sublime-workspace
+
+# CSS backup files
+*.css.backup
+

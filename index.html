@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -26,15 +26,33 @@
           <div class="input-group">
             <div class="input-wrapper">
               <label for="word1">Word 1</label>
-              <input type="text" id="word1" placeholder="e.g., excellence" pattern="[A-Za-z]+" title="Letters only" />
+              <input
+                type="text"
+                id="word1"
+                placeholder="e.g., excellence"
+                pattern="[A-Za-z]+"
+                title="Letters only"
+              />
             </div>
             <div class="input-wrapper">
               <label for="word2">Word 2</label>
-              <input type="text" id="word2" placeholder="e.g., skills" pattern="[A-Za-z]+" title="Letters only" />
+              <input
+                type="text"
+                id="word2"
+                placeholder="e.g., skills"
+                pattern="[A-Za-z]+"
+                title="Letters only"
+              />
             </div>
             <div class="input-wrapper">
               <label for="word3">Word 3</label>
-              <input type="text" id="word3" placeholder="e.g., future" pattern="[A-Za-z]+" title="Letters only" />
+              <input
+                type="text"
+                id="word3"
+                placeholder="e.g., future"
+                pattern="[A-Za-z]+"
+                title="Letters only"
+              />
             </div>
           </div>
 
@@ -101,7 +119,11 @@
         <div class="allocation-grid" id="allocation-grid"></div>
         <div class="seed-display" id="seed-display"></div>
         <div class="button-group seed-actions">
-          <button type="button" class="button button-secondary" onclick="saveSeed()">
+          <button
+            type="button"
+            class="button button-secondary"
+            onclick="saveSeed()"
+          >
             Save Allocation
           </button>
         </div>
@@ -117,7 +139,8 @@
     <script src="js/utils.js"></script>
     <script src="js/app.js"></script>
     <script>
-      document.getElementById('footer-year').textContent = new Date().getFullYear();
+      document.getElementById("footer-year").textContent =
+        new Date().getFullYear();
     </script>
   </body>
 </html>

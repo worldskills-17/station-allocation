@@ -1,0 +1,26 @@
+{
+  "name": "station-allocation",
+  "version": "1.0.0",
+  "description": "Generate reproducible and transparent station allocations for WorldSkills competitions using seeded randomization.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fix": "prettier --write css/ js/ *.html && stylelint --fix css/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/worldskills-17/station-allocation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/worldskills-17/station-allocation/issues"
+  },
+  "homepage": "https://github.com/worldskills-17/station-allocation#readme",
+  "devDependencies": {
+    "prettier": "^3.7.4",
+    "stylelint": "^16.26.1",
+    "stylelint-config-standard": "^39.0.1"
+  }
+}

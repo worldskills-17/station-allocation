@@ -2,55 +2,55 @@
 
 /* Local Font Faces */
 @font-face {
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('fonts/OpenSans-Regular.ttf') format('truetype');
+  src: url("fonts/OpenSans-Regular.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('fonts/OpenSans-SemiBold.ttf') format('truetype');
+  src: url("fonts/OpenSans-SemiBold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('fonts/OpenSans-Bold.ttf') format('truetype');
+  src: url("fonts/OpenSans-Bold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'IBM Plex Serif';
+  font-family: "IBM Plex Serif";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('fonts/IBMPlexSerif-Regular.ttf') format('truetype');
+  src: url("fonts/IBMPlexSerif-Regular.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'IBM Plex Serif';
+  font-family: "IBM Plex Serif";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('fonts/IBMPlexSerif-SemiBold.ttf') format('truetype');
+  src: url("fonts/IBMPlexSerif-SemiBold.ttf") format("truetype");
 }
 
 :root {
   /* Official WorldSkills Brand Colors */
-  --ws-yellow: #FEE300;      /* Pantone 102C - C5 M4 Y100 K0 */
-  --ws-pink: #D51067;        /* Pantone 214C - C9 M98 Y28 K2 */
-  --ws-navy: #003764;        /* Pantone 2955C - C100 M76 Y37 K28 */
-  --ws-light-blue: #72D0EB;  /* Pantone 0821C - C54 M0 Y8 K0 */
-  --ws-orange: #FF6C0C;      /* Pantone 1585C - C0 M68 Y90 K0 */
-  --ws-purple: #4A0D66;      /* Pantone 2617C - C87 M100 Y26 K16 */
-  --ws-teal: #0084AD;        /* Pantone 7704C - C92 M27 Y20 K5 */
-  --ws-mint: #8AE2D1;        /* Pantone 332C - C47 M0 Y27 K0 */
+  --ws-yellow: #fee300; /* Pantone 102C - C5 M4 Y100 K0 */
+  --ws-pink: #d51067; /* Pantone 214C - C9 M98 Y28 K2 */
+  --ws-navy: #003764; /* Pantone 2955C - C100 M76 Y37 K28 */
+  --ws-light-blue: #72d0eb; /* Pantone 0821C - C54 M0 Y8 K0 */
+  --ws-orange: #ff6c0c; /* Pantone 1585C - C0 M68 Y90 K0 */
+  --ws-purple: #4a0d66; /* Pantone 2617C - C87 M100 Y26 K16 */
+  --ws-teal: #0084ad; /* Pantone 7704C - C92 M27 Y20 K5 */
+  --ws-mint: #8ae2d1; /* Pantone 332C - C47 M0 Y27 K0 */
 
   /* App Variables - Default to Light Blue → Teal gradient */
   --gradient-start: var(--ws-light-blue);
@@ -60,7 +60,7 @@
   --accent-light: #e8f4f8;
   --accent-grey: #b3c3d1;
   --text-dark: var(--ws-navy);
-  --white: #ffffff;
+  --white: #fff;
 }
 
 * {
@@ -70,10 +70,22 @@
 }
 
 body {
-  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  font-family:
+    "Open Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  background: linear-gradient(
+    135deg,
+    var(--gradient-start) 0%,
+    var(--gradient-end) 100%
+  );
   min-height: 100vh;
-  padding: 20px 20px 0 20px;
+  padding: 20px 20px 0;
   position: relative;
   overflow-x: hidden;
   display: flex;
@@ -113,11 +125,11 @@ body {
 
 header {
   color: var(--primary-dark);
-  margin: 0 auto 40px auto;
+  margin: 0 auto 40px;
   padding: 30px 20px;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgb(255 255 255 / 95%);
   border-radius: 8px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 12%);
   display: flex;
   align-items: center;
   gap: 30px;
@@ -136,7 +148,7 @@ header:has(.header-logo) {
   height: auto;
   width: auto;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 15%));
 }
 
 .header-content {
@@ -145,12 +157,12 @@ header:has(.header-logo) {
 }
 
 h1 {
-  font-family: "IBM Plex Serif", "Georgia", "Times New Roman", serif;
+  font-family: "IBM Plex Serif", Georgia, "Times New Roman", serif;
   font-weight: 600;
   font-size: 2.5rem;
   margin-bottom: 10px;
   color: var(--ws-teal);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 2px 4px rgb(0 0 0 / 10%);
 }
 
 .subtitle {
@@ -165,7 +177,7 @@ h2 {
   color: var(--ws-navy);
   margin-bottom: 20px;
   font-size: 1.8rem;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  text-shadow: 0 1px 3px rgb(0 0 0 / 8%);
 }
 
 .card {
@@ -173,11 +185,18 @@ h2 {
   border-radius: 8px;
   padding: 40px;
   margin-bottom: 30px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 12%);
 }
 
 .input-section h2 {
-  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family:
+    "Open Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
   font-weight: 600;
   color: var(--text-dark);
   margin-bottom: 20px;
@@ -207,9 +226,16 @@ input,
 select,
 textarea {
   padding: 12px 16px;
-  border: 1px solid rgba(179, 195, 209, 0.5);
+  border: 1px solid rgb(179 195 209 / 50%);
   border-radius: 2px;
-  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family:
+    "Open Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
   font-size: 1rem;
   transition: border-color 0.3s;
 }
@@ -227,12 +253,11 @@ input::placeholder {
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 
 input[type="number"] {
-  -moz-appearance: textfield;
   appearance: textfield;
 }
 
@@ -284,7 +309,7 @@ input[type="file"] {
 .color-preview-box {
   width: 60px;
   height: 45px;
-  border: 1px solid rgba(179, 195, 209, 0.5);
+  border: 1px solid rgb(179 195 209 / 50%);
   border-radius: 2px;
   cursor: pointer;
   transition: border-color 0.3s;
@@ -306,7 +331,7 @@ input[type="file"] {
 .hex-input {
   flex: 1;
   max-width: 140px;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   text-transform: uppercase;
   font-size: 0.9rem;
   letter-spacing: 0.5px;
@@ -323,7 +348,7 @@ input[type="file"] {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgb(0 0 0 / 50%);
   z-index: 9998;
   display: none;
   align-items: center;
@@ -338,7 +363,7 @@ input[type="file"] {
   background: var(--white);
   border-radius: 2px;
   padding: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 30%);
   z-index: 9999;
   width: 320px;
   max-width: 90%;
@@ -356,7 +381,7 @@ input[type="file"] {
   width: 100%;
   height: 100%;
   border-radius: 2px;
-  border: 1px solid rgba(179, 195, 209, 0.5);
+  border: 1px solid rgb(179 195 209 / 50%);
 }
 
 .color-picker-cursor {
@@ -366,7 +391,7 @@ input[type="file"] {
   border: 2px solid white;
   border-radius: 50%;
   pointer-events: none;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 4px rgb(0 0 0 / 50%);
   transform: translate(-50%, -50%);
 }
 
@@ -376,10 +401,17 @@ input[type="file"] {
   margin-bottom: 15px;
   border-radius: 2px;
   cursor: pointer;
-  background: linear-gradient(to right,
-    #ff0000 0%, #ff00ff 17%, #0000ff 33%,
-    #00ffff 50%, #00ff00 67%, #ffff00 83%, #ff0000 100%);
-  border: 1px solid rgba(179, 195, 209, 0.5);
+  background: linear-gradient(
+    to right,
+    #f00 0%,
+    #f0f 17%,
+    #00f 33%,
+    #0ff 50%,
+    #0f0 67%,
+    #ff0 83%,
+    #f00 100%
+  );
+  border: 1px solid rgb(179 195 209 / 50%);
   position: relative;
 }
 
@@ -388,7 +420,7 @@ input[type="file"] {
   width: 4px;
   height: 100%;
   background: white;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 3px rgb(0 0 0 / 50%);
   pointer-events: none;
   top: 0;
 }
@@ -403,16 +435,16 @@ input[type="file"] {
 .color-picker-current {
   flex: 1;
   height: 40px;
-  border: 1px solid rgba(179, 195, 209, 0.5);
+  border: 1px solid rgb(179 195 209 / 50%);
   border-radius: 2px;
 }
 
 .color-picker-hex-display {
   flex: 0 0 110px;
   padding: 8px 12px;
-  border: 1px solid rgba(179, 195, 209, 0.5);
+  border: 1px solid rgb(179 195 209 / 50%);
   border-radius: 2px;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 0.95rem;
   text-transform: uppercase;
   text-align: center;
@@ -474,54 +506,61 @@ input[type="file"] {
   padding: 14px 32px;
   font-size: 1rem;
   font-weight: 600;
-  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family:
+    "Open Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 55, 122, 0.25);
+  box-shadow: 0 2px 8px rgb(0 55 122 / 25%);
 }
 
 .button:hover {
   background: #00547a;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 55, 122, 0.35);
+  box-shadow: 0 4px 12px rgb(0 55 122 / 35%);
 }
 
 .button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 55, 122, 0.3);
+  box-shadow: 0 2px 6px rgb(0 55 122 / 30%);
 }
 
 .button-secondary {
   background: var(--ws-teal);
-  box-shadow: 0 2px 8px rgba(0, 132, 173, 0.25);
+  box-shadow: 0 2px 8px rgb(0 132 173 / 25%);
 }
 
 .button-secondary:hover {
   background: #006a8e;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 132, 173, 0.35);
+  box-shadow: 0 4px 12px rgb(0 132 173 / 35%);
 }
 
 .button-secondary:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 132, 173, 0.3);
+  box-shadow: 0 2px 6px rgb(0 132 173 / 30%);
 }
 
 .button-success {
   background: #28a745;
-  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.25);
+  box-shadow: 0 2px 8px rgb(40 167 69 / 25%);
 }
 
 .button-success:hover {
   background: #218838;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.35);
+  box-shadow: 0 4px 12px rgb(40 167 69 / 35%);
 }
 
 .button-success:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(40, 167, 69, 0.3);
+  box-shadow: 0 2px 6px rgb(40 167 69 / 30%);
 }
 
 .results {
@@ -539,7 +578,7 @@ input[type="file"] {
   margin-bottom: 30px;
   font-size: 1.8rem;
   text-align: center;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  text-shadow: 0 1px 3px rgb(0 0 0 / 8%);
 }
 
 .allocation-grid {
@@ -549,20 +588,26 @@ input[type="file"] {
 }
 
 .competitor-card {
-  background: linear-gradient(135deg, rgba(179, 195, 209, 0.15) 0%, rgba(179, 195, 209, 0.25) 100%);
+  background: linear-gradient(
+    135deg,
+    rgb(179 195 209 / 15%) 0%,
+    rgb(179 195 209 / 25%) 100%
+  );
   padding: 20px;
   border-radius: 8px;
   border-left: 4px solid var(--ws-teal);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
 }
 
 .competitor-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 15%);
 }
 
 .station-header {
@@ -577,7 +622,7 @@ input[type="file"] {
   font-weight: 600;
   font-size: 2rem;
   color: var(--ws-navy);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  text-shadow: 0 1px 2px rgb(0 0 0 / 8%);
 }
 
 .flag-container {
@@ -597,10 +642,10 @@ input[type="file"] {
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-dark);
-  background: rgba(255, 255, 255, 0.6);
+  background: rgb(255 255 255 / 60%);
   padding: 4px 10px;
   border-radius: 4px;
-  border: 1px solid rgba(179, 195, 209, 0.3);
+  border: 1px solid rgb(179 195 209 / 30%);
 }
 
 .competitor-name {
@@ -611,16 +656,20 @@ input[type="file"] {
 
 .seed-display {
   text-align: center;
-  margin: 30px auto 0 auto;
+  margin: 30px auto 0;
   padding: 16px 40px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  background: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 95%) 0%,
+    rgb(255 255 255 / 85%) 100%
+  );
   border-radius: 8px;
   color: var(--ws-navy);
   font-weight: 600;
   font-size: 1rem;
   max-width: 600px;
-  border: 1px solid rgba(179, 195, 209, 0.5);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgb(179 195 209 / 50%);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 12%);
 }
 
 .seed-actions {
@@ -638,8 +687,12 @@ input[type="file"] {
 .color-preview {
   height: 45px;
   border-radius: 2px;
-  border: 1px solid rgba(179, 195, 209, 0.5);
-  background: linear-gradient(135deg, var(--ws-light-blue) 0%, var(--ws-teal) 100%);
+  border: 1px solid rgb(179 195 209 / 50%);
+  background: linear-gradient(
+    135deg,
+    var(--ws-light-blue) 0%,
+    var(--ws-teal) 100%
+  );
 }
 
 .logo-upload-container {
@@ -664,12 +717,12 @@ input[type="file"] {
 
 .logo-preview {
   height: 140px;
-  border: 1px solid rgba(179, 195, 209, 0.5);
+  border: 1px solid rgb(179 195 209 / 50%);
   border-radius: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(179, 195, 209, 0.05);
+  background: rgb(179 195 209 / 5%);
   padding: 15px;
 }
 
@@ -739,7 +792,7 @@ footer p {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgb(0 0 0 / 60%);
   display: none;
   align-items: center;
   justify-content: center;
@@ -748,28 +801,34 @@ footer p {
 
 .modal-overlay.show {
   display: flex;
-  animation: fadeIn 0.2s ease;
+  animation: fade-in 0.2s ease;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-content {
   background: var(--white);
   border-radius: 4px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 40px rgb(0 0 0 / 30%);
   max-width: 500px;
   width: 90%;
-  animation: slideUp 0.3s ease;
+  animation: slide-up 0.3s ease;
 }
 
-@keyframes slideUp {
+@keyframes slide-up {
   from {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -778,7 +837,7 @@ footer p {
 
 .modal-header {
   padding: 25px 30px 20px;
-  border-bottom: 1px solid rgba(179, 195, 209, 0.3);
+  border-bottom: 1px solid rgb(179 195 209 / 30%);
   display: flex;
   align-items: center;
   gap: 15px;
@@ -866,7 +925,7 @@ footer p {
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (width <= 768px) {
   h1 {
     font-size: 2rem;
   }
