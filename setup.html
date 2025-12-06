@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WorldSkills Station Allocation - Setup</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="header-content">
+        <h1>Station Allocation Setup</h1>
+        <p class="subtitle">Configure Competition Settings</p>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+      <!-- Branding Card -->
+      <div class="card">
+        <h2>Competition Branding</h2>
+        <div class="branding-row">
+          <div class="input-wrapper">
+            <label for="gradient-start-hex">Gradient Start Color</label>
+            <div class="color-input-group" data-picker="start">
+              <div
+                class="color-preview-box color-preview-default-start"
+                id="gradient-start-preview"
+              ></div>
+              <input
+                type="text"
+                id="gradient-start-hex"
+                value="#72d0eb"
+                pattern="^#[0-9A-Fa-f]{6}$"
+                placeholder="#72D0EB"
+                class="hex-input"
+              />
+            </div>
+          </div>
+
+          <div class="input-wrapper">
+            <label for="gradient-end-hex">Gradient End Color</label>
+            <div class="color-input-group" data-picker="end">
+              <div
+                class="color-preview-box color-preview-default-end"
+                id="gradient-end-preview"
+              ></div>
+              <input
+                type="text"
+                id="gradient-end-hex"
+                value="#0084ad"
+                pattern="^#[0-9A-Fa-f]{6}$"
+                placeholder="#0084AD"
+                class="hex-input"
+              />
+            </div>
+          </div>
+
+          <div class="input-wrapper">
+            <label>Gradient Preview</label>
+            <div id="color-preview" class="color-preview"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logo Card -->
+      <div class="card">
+        <h2>Competition Logo</h2>
+        <div class="logo-upload-container">
+          <div class="input-wrapper">
+            <label for="logo-file">Upload Logo (Optional)</label>
+            <div class="file-upload-wrapper">
+              <label for="logo-file" class="file-upload-label">
+                Choose Logo Image
+              </label>
+              <input
+                type="file"
+                id="logo-file"
+                accept="image/png,image/jpeg,image/svg+xml,image/gif"
+              />
+              <div id="logo-name" class="file-name-display">
+                No logo selected. Default WorldSkills logo will be used.
+              </div>
+            </div>
+            <p class="info-text">
+              Supports PNG, JPG, SVG, GIF. Logo color will auto-adjust based on
+              gradient brightness.
+            </p>
+          </div>
+          <div class="logo-preview-wrapper">
+            <h4>Logo Preview</h4>
+            <div id="logo-preview" class="logo-preview">
+              <span class="logo-preview-placeholder">No logo uploaded</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Competitors Data Card -->
+      <div class="card">
+        <h2>Competitors Data</h2>
+        <div class="input-wrapper">
+          <label for="competitors-file">Upload Competitors File</label>
+          <div class="file-upload-wrapper">
+            <label for="competitors-file" class="file-upload-label">
+              Choose File (CSV or TXT)
+            </label>
+            <input type="file" id="competitors-file" accept=".csv,.txt" />
+            <div id="file-name" class="file-name-display">No file selected</div>
+          </div>
+          <p class="info-text">
+            Required format: Name, LastName, CountryCode (e.g., John Smith GB)
+          </p>
+          <a
+            href="#"
+            class="template-download"
+            onclick="downloadTemplate(); return false;"
+          >
+            Download Sample Template
+          </a>
+        </div>
+      </div>
+
+      <!-- Actions Card -->
+      <div class="card">
+        <div class="button-group">
+          <button
+            type="button"
+            class="button button-success"
+            onclick="saveConfiguration()"
+          >
+            Save Configuration & Continue
+          </button>
+          <button type="button" class="button" onclick="goToAllocation()">
+            Go to Allocation Page
+          </button>
+        </div>
+
+        <div class="button-group button-group-spaced">
+          <button
+            type="button"
+            class="button button-secondary"
+            onclick="exportConfig()"
+          >
+            Export Config (JSON)
+          </button>
+          <button
+            type="button"
+            class="button button-secondary"
+            onclick="importConfig()"
+          >
+            Import Config (JSON)
+          </button>
+          <button
+            type="button"
+            class="button button-secondary"
+            onclick="resetConfiguration()"
+          >
+            Reset to Defaults
+          </button>
+        </div>
+      </div>
+
+      <!-- Instructions Card -->
+      <div class="card">
+        <div class="input-section">
+          <h2>Instructions</h2>
+          <ol class="instructions-list">
+            <li>
+              Choose the competition brand colors using the gradient pickers
+            </li>
+            <li>Optionally upload your competition logo</li>
+            <li>
+              Download the sample template and fill in your competitor data
+            </li>
+            <li>
+              Upload the completed file (CSV or TXT) with competitor details,
+              comma (<strong>,</strong>) separated.
+            </li>
+            <li>
+              Click "Save Configuration & Continue" to proceed to the allocation
+              page
+            </li>
+          </ol>
+          <p class="info-text info-text-spaced">
+            <strong>Note:</strong> If you're opening this from your file system
+            (file://), localStorage might be blocked by browser security. For
+            best results, run this on a local web server.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; <span id="footer-year"></span> WorldSkills Competitions</p>
+    </footer>
+
+    <!-- Color Picker Modal -->
+    <div class="color-picker-overlay" id="color-picker-modal">
+      <div class="custom-color-picker">
+        <div class="color-picker-canvas-container" id="color-canvas-container">
+          <canvas id="color-canvas" class="color-picker-canvas"></canvas>
+          <div class="color-picker-cursor" id="color-cursor"></div>
+        </div>
+        <div class="color-picker-hue-slider" id="hue-slider">
+          <div class="color-picker-hue-cursor" id="hue-cursor"></div>
+        </div>
+        <div class="color-picker-preview">
+          <div class="color-picker-current" id="color-current"></div>
+          <div class="color-picker-hex-display" id="color-hex-display">
+            #72D0EB
+          </div>
+        </div>
+        <div class="color-picker-actions">
+          <button
+            type="button"
+            class="color-picker-btn color-picker-btn-cancel"
+            id="color-cancel"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="color-picker-btn color-picker-btn-ok"
+            id="color-ok"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/setup.js"></script>
+    <script>
+      document.getElementById("footer-year").textContent =
+        new Date().getFullYear();
+    </script>
+  </body>
+</html>

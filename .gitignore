@@ -1,0 +1,36 @@
+# AI Models
+.claude/
+.gpt/
+.gemini/
+.bard/
+.llama/
+.mistral/
+.stable-diffusion/
+.merlin/
+
+# Dependency directories
+node_modules/
+venv/
+.env/
+__pycache__/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.old

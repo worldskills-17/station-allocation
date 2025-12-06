@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WorldSkills Station Allocation Generator</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="header-content">
+        <h1>Station Allocation Generator</h1>
+        <p class="subtitle">WorldSkills Competitor Station Assignment</p>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+      <!-- Seed Input Card -->
+      <div class="card">
+        <div class="input-section">
+          <h2>Enter Seed Values</h2>
+
+          <!-- Word Inputs -->
+          <div class="input-group">
+            <div class="input-wrapper">
+              <label for="word1">Word 1</label>
+              <input type="text" id="word1" placeholder="e.g., excellence" pattern="[A-Za-z]+" title="Letters only" />
+            </div>
+            <div class="input-wrapper">
+              <label for="word2">Word 2</label>
+              <input type="text" id="word2" placeholder="e.g., skills" pattern="[A-Za-z]+" title="Letters only" />
+            </div>
+            <div class="input-wrapper">
+              <label for="word3">Word 3</label>
+              <input type="text" id="word3" placeholder="e.g., future" pattern="[A-Za-z]+" title="Letters only" />
+            </div>
+          </div>
+
+          <!-- Number Inputs -->
+          <div class="input-group">
+            <div class="input-wrapper">
+              <label for="digit1">Number 1</label>
+              <input
+                type="number"
+                id="digit1"
+                placeholder="0-99"
+                min="0"
+                max="99"
+              />
+            </div>
+            <div class="input-wrapper">
+              <label for="digit2">Number 2</label>
+              <input
+                type="number"
+                id="digit2"
+                placeholder="0-99"
+                min="0"
+                max="99"
+              />
+            </div>
+            <div class="input-wrapper">
+              <label for="digit3">Number 3</label>
+              <input
+                type="number"
+                id="digit3"
+                placeholder="0-99"
+                min="0"
+                max="99"
+              />
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="button-group">
+            <button type="button" class="button" onclick="generateAllocation()">
+              Generate Station Allocation
+            </button>
+            <button
+              type="button"
+              class="button button-secondary"
+              onclick="clearForm()"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              class="button button-secondary"
+              onclick="goToSetup()"
+            >
+              Setup
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Card -->
+      <div class="card results" id="results">
+        <h2>Station Allocation Results</h2>
+        <div class="allocation-grid" id="allocation-grid"></div>
+        <div class="seed-display" id="seed-display"></div>
+        <div class="button-group seed-actions">
+          <button type="button" class="button button-secondary" onclick="saveSeed()">
+            Save Allocation
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; <span id="footer-year"></span> WorldSkills International</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      document.getElementById('footer-year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
