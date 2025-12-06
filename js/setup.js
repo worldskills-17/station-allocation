@@ -357,14 +357,14 @@ async function handleFileUpload(event) {
       await showAlert(
         "Please convert XLSX to CSV format for now. XLSX support coming soon!",
         "info",
-        "XLSX Not Supported",
+        "XLSX Not Supported"
       );
       return;
     } else {
       await showAlert(
         "Unsupported file format. Please use CSV or TXT files.",
         "error",
-        "Invalid File Type",
+        "Invalid File Type"
       );
       return;
     }
@@ -373,7 +373,7 @@ async function handleFileUpload(event) {
       await showAlert(
         "No valid competitors found in the file. Please check the format.",
         "warning",
-        "No Competitors Found",
+        "No Competitors Found"
       );
       return;
     }
@@ -381,14 +381,12 @@ async function handleFileUpload(event) {
     const fileNameDisplay = document.getElementById("file-name");
     fileNameDisplay.textContent = `✓ ${uploadedCompetitors.length} competitors loaded`;
     fileNameDisplay.classList.add("loaded");
-
-    console.log("Loaded competitors:", uploadedCompetitors);
   } catch (error) {
     console.error("Error reading file:", error);
     await showAlert(
       "Error reading file. Please check the file format.",
       "error",
-      "File Error",
+      "File Error"
     );
   }
 }
@@ -400,11 +398,11 @@ async function handleLogoUpload(event) {
   const fileName = file.name;
   const fileExtension = fileName.split(".").pop().toLowerCase();
 
-  if (!["png", "jpg", "jpeg", "svg", "gif"].includes(fileExtension)) {
+  if (!["png", "jpg", "jpeg", "svg"].includes(fileExtension)) {
     await showAlert(
-      "Please upload a valid image file (PNG, JPG, SVG, GIF)",
+      "Please upload a valid image file (PNG, JPG, SVG)",
       "error",
-      "Invalid Image Type",
+      "Invalid Image Type"
     );
     return;
   }
@@ -462,14 +460,14 @@ async function downloadTemplate() {
     await showAlert(
       "Template downloaded successfully!",
       "success",
-      "Download Complete",
+      "Download Complete"
     );
   } catch (error) {
     console.error("Error downloading template:", error);
     await showAlert(
       "Error downloading template. Please check the console.",
       "error",
-      "Download Failed",
+      "Download Failed"
     );
   }
 }
@@ -482,7 +480,7 @@ async function saveConfiguration() {
     await showAlert(
       "Please select gradient colors",
       "warning",
-      "Missing Colors",
+      "Missing Colors"
     );
     return;
   }
@@ -491,7 +489,7 @@ async function saveConfiguration() {
     await showAlert(
       "Please upload a competitors file before saving",
       "warning",
-      "Missing Competitors",
+      "Missing Competitors"
     );
     return;
   }
@@ -505,25 +503,23 @@ async function saveConfiguration() {
   };
 
   const saveSuccess = saveConfig(config);
-  console.log("Save result:", saveSuccess);
 
   if (!saveSuccess) {
     await showAlert(
       "Failed to save configuration. This might be due to browser security settings with local files.<br><br>Please try running this on a web server instead.",
       "error",
-      "Save Failed",
+      "Save Failed"
     );
     return;
   }
 
   const verifyConfig = loadConfig();
-  console.log("Verification config:", verifyConfig);
 
   if (!verifyConfig) {
     await showAlert(
       "Error verifying saved configuration. Please try again.",
       "error",
-      "Verification Failed",
+      "Verification Failed"
     );
     return;
   }
@@ -531,7 +527,7 @@ async function saveConfiguration() {
   await showAlert(
     `Configuration saved successfully!<br><br><strong>${uploadedCompetitors.length} competitors</strong> loaded and ready for allocation.`,
     "success",
-    "Configuration Saved",
+    "Configuration Saved"
   );
 
   window.location.href = "index.html";
@@ -542,7 +538,7 @@ async function resetConfiguration() {
     "Are you sure you want to reset all configuration? This will clear all saved settings and cannot be undone.",
     "Reset Configuration",
     "Reset",
-    "Cancel",
+    "Cancel"
   );
 
   if (confirmed) {
@@ -573,7 +569,7 @@ async function resetConfiguration() {
     await showAlert(
       "Configuration has been reset to defaults",
       "success",
-      "Reset Complete",
+      "Reset Complete"
     );
   }
 }
@@ -586,7 +582,7 @@ async function goToAllocation() {
       "No configuration found. Would you like to save the current settings first?",
       "Configuration Required",
       "Save & Continue",
-      "Cancel",
+      "Cancel"
     );
 
     if (confirmed) {
@@ -604,7 +600,7 @@ async function exportConfig() {
     await showAlert(
       "No configuration to export. Please set up first.",
       "warning",
-      "No Configuration",
+      "No Configuration"
     );
     return;
   }
@@ -625,7 +621,7 @@ async function exportConfig() {
   await showAlert(
     "Configuration exported successfully!",
     "success",
-    "Export Complete",
+    "Export Complete"
   );
 }
 
@@ -652,14 +648,14 @@ async function importConfig() {
       await showAlert(
         `Configuration imported successfully!<br><strong>${config.competitors.length} competitors</strong> loaded.`,
         "success",
-        "Import Complete",
+        "Import Complete"
       );
     } catch (error) {
       console.error("Import error:", error);
       await showAlert(
         "Error importing configuration. Invalid JSON file.",
         "error",
-        "Import Failed",
+        "Import Failed"
       );
     }
   };

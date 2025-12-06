@@ -54,17 +54,13 @@ function seededShuffle(array, rng) {
  */
 function loadConfig() {
   try {
-    console.log("Loading config from localStorage...");
     const configString = localStorage.getItem("stationAllocationConfig");
-    console.log("Raw config string:", configString ? "Found" : "Not found");
 
     if (!configString) {
-      console.log("No config found in localStorage");
       return null;
     }
 
     const config = JSON.parse(configString);
-    console.log("Parsed config:", config);
     return config;
   } catch (error) {
     console.error("Error loading configuration:", error);
@@ -79,26 +75,17 @@ function loadConfig() {
  */
 function saveConfig(config) {
   try {
-    console.log("Attempting to save config:", config);
     const configString = JSON.stringify(config);
-    console.log("Stringified config length:", configString.length);
-
     localStorage.setItem("stationAllocationConfig", configString);
 
     // Verify save
     const saved = localStorage.getItem("stationAllocationConfig");
     if (saved) {
-      console.log("Config successfully saved to localStorage");
       return true;
     } else {
-      console.error(
-        "Config was not saved - localStorage.getItem returned null",
-      );
       return false;
     }
   } catch (error) {
-    console.error("Error saving configuration:", error);
-    console.error("Error details:", error.message);
     return false;
   }
 }
