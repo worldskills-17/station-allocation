@@ -69,4 +69,4 @@ Download the sample template from the setup page.
 
 ---
 
-**Developed and maintained by** [Val Adamescu](https://www.linkedin.com/in/valadamescu/)
+**Developed and maintained by** [Val Adamescu](https://uk.linkedin.com/in/valadam)
