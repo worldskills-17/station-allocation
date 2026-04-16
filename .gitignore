@@ -39,6 +39,7 @@ npm-debug.log*
 dist/
 build/
 *.min.js
+!js/jspdf.umd.min.js
 *.min.css
 
 # Package lock files

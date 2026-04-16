@@ -165,7 +165,7 @@ async function generateAllocation() {
     return;
   }
 
-  const seedString = `${word1}-${word2}-${word3}-${digit1}${digit2}${digit3}`;
+  const seedString = `${word1}, ${word2}, ${word3}, ${digit1}, ${digit2}, ${digit3}`;
   const seed = hashString(seedString);
   const rng = new SeededRandom(seed);
   const shuffledCompetitors = seededShuffle(competitors, rng);
@@ -229,7 +229,10 @@ async function saveSeed() {
     return;
   }
 
-  // Extract seed from display text
+  // Ask user for format
+  const format = await showFormatChoice();
+  if (!format) return;
+
   const seedText = seedDisplay.textContent.replace("Seed: ", "");
   const now = new Date();
   const timestamp = now.toISOString().replace(/[:.]/g, "-").slice(0, -5);
@@ -238,25 +241,167 @@ async function saveSeed() {
   const allocationGrid = document.getElementById("allocation-grid");
   const competitorCards = allocationGrid.querySelectorAll(".competitor-card");
 
-  // Build allocation list from competitor cards
-  let allocationList = "";
+  // Build allocation data
+  const allocations = [];
   competitorCards.forEach((card, index) => {
     const station = index + 1;
     const nameElement = card.querySelector(".competitor-name");
     const flagElement = card.querySelector(".country-flag");
-
     const name = nameElement ? nameElement.textContent : "Unknown";
     const countrySrc = flagElement ? flagElement.getAttribute("src") : "";
-
-    // Extract country code from flag path (img/flags/XX.svg)
     let countryCode = "XX";
     if (countrySrc) {
       const match = countrySrc.match(/\/([A-Z]{2})\.svg/);
       countryCode = match ? match[1] : "XX";
     }
-
-    allocationList += `Station ${station.toString().padStart(2, "0")}: ${name.padEnd(30)} [${countryCode}]\n`;
+    allocations.push({ station, name, countryCode });
   });
+
+  if (format === "pdf") {
+    savePDF(allocations, seedText, readableTimestamp, timestamp);
+  } else {
+    saveTXT(allocations, seedText, readableTimestamp, timestamp);
+  }
+}
+
+function showFormatChoice() {
+  return new Promise((resolve) => {
+    const modal = createModalContainer();
+
+    modal.innerHTML = `
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-icon info">&#x2193;</div>
+          <h3 class="modal-title">Save Format</h3>
+        </div>
+        <div class="modal-body">
+          Choose the format to save the allocation:
+        </div>
+        <div class="modal-footer">
+          <button class="modal-button modal-button-secondary" id="modal-cancel-btn">Cancel</button>
+          <button class="modal-button modal-button-secondary" id="modal-txt-btn">Save as TXT</button>
+          <button class="modal-button modal-button-primary" id="modal-pdf-btn">Save as PDF</button>
+        </div>
+      </div>
+    `;
+
+    modal.classList.add("show");
+
+    modal.querySelector("#modal-pdf-btn").addEventListener("click", () => {
+      modal.classList.remove("show");
+      resolve("pdf");
+    });
+    modal.querySelector("#modal-txt-btn").addEventListener("click", () => {
+      modal.classList.remove("show");
+      resolve("txt");
+    });
+    modal.querySelector("#modal-cancel-btn").addEventListener("click", () => {
+      modal.classList.remove("show");
+      resolve(null);
+    });
+    modal.onclick = (e) => {
+      if (e.target === modal) {
+        modal.classList.remove("show");
+        resolve(null);
+      }
+    };
+  });
+}
+
+async function savePDF(allocations, seedText, readableTimestamp, timestamp) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.getWidth();
+
+  // Title
+  doc.setFontSize(18);
+  doc.setFont("helvetica", "bold");
+  doc.text("WorldSkills Station Allocation", pageWidth / 2, 25, { align: "center" });
+
+  // Subtitle
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text("Official Record", pageWidth / 2, 33, { align: "center" });
+
+  // Timestamp
+  doc.setFontSize(9);
+  doc.setTextColor(100);
+  doc.text(`Generated: ${readableTimestamp}`, pageWidth / 2, 40, { align: "center" });
+  doc.setTextColor(0);
+
+  // Seed
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "bold");
+  doc.text(`Seed: ${seedText}`, pageWidth / 2, 50, { align: "center" });
+
+  // Divider line
+  doc.setDrawColor(0, 132, 173);
+  doc.setLineWidth(0.5);
+  doc.line(20, 55, pageWidth - 20, 55);
+
+  // Table header
+  let y = 65;
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "bold");
+  doc.setFillColor(0, 132, 173);
+  doc.setTextColor(255);
+  doc.rect(20, y - 5, pageWidth - 40, 8, "F");
+  doc.text("Station", 25, y);
+  doc.text("Competitor", 55, y);
+  doc.text("Country", pageWidth - 40, y);
+
+  // Table rows
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(0);
+  y += 10;
+
+  allocations.forEach((a, i) => {
+    if (y > 270) {
+      doc.addPage();
+      y = 20;
+    }
+
+    // Alternate row background
+    if (i % 2 === 0) {
+      doc.setFillColor(240, 248, 252);
+      doc.rect(20, y - 5, pageWidth - 40, 8, "F");
+    }
+
+    doc.text(`Station ${a.station.toString().padStart(2, "0")}`, 25, y);
+    doc.text(a.name, 55, y);
+    doc.text(a.countryCode, pageWidth - 40, y);
+    y += 8;
+  });
+
+  // Footer
+  y += 10;
+  doc.setDrawColor(0, 132, 173);
+  doc.line(20, y, pageWidth - 20, y);
+  y += 10;
+  doc.setFontSize(8);
+  doc.setTextColor(100);
+  doc.text(`Total Competitors: ${allocations.length}`, 20, y);
+  y += 6;
+  doc.text("This seed can be used to regenerate the exact same station allocation.", 20, y);
+  y += 6;
+  doc.text(`\u00A9 WorldSkills ${new Date().getFullYear()}`, 20, y);
+
+  const fileName = `allocation-${timestamp}.pdf`;
+  doc.save(fileName);
+
+  await showAlert(
+    `Allocation saved successfully as:<br><strong>${fileName}</strong>`,
+    "success",
+    "Allocation Saved",
+  );
+}
+
+async function saveTXT(allocations, seedText, readableTimestamp, timestamp) {
+  let allocationList = "";
+  allocations.forEach((a) => {
+    allocationList += `Station ${a.station.toString().padStart(2, "0")}: ${a.name.padEnd(30)} [${a.countryCode}]\n`;
+  });
+
   const fileContent = `WorldSkills Station Allocation - Official Record
 ==================================================
 
@@ -269,65 +414,32 @@ ${allocationList}
 --------------------------------------------------
 
 Competition Configuration:
-- Total Competitors: ${competitors.length}
+- Total Competitors: ${allocations.length}
 
 REPRODUCIBILITY
 This seed value can be used to regenerate the exact same station
 allocation. Enter the seed values in the generator to reproduce
 these results.
 
-© WorldSkills ${new Date().getFullYear()}
+\u00A9 WorldSkills ${new Date().getFullYear()}
 `;
 
   const fileName = `allocation-${timestamp}.txt`;
+  const blob = new Blob([fileContent], { type: "text/plain" });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
 
-  // Try to use File System Access API (Chrome, Edge) for save location dialog
-  if ("showSaveFilePicker" in window) {
-    try {
-      const opts = {
-        suggestedName: fileName,
-        types: [
-          {
-            description: "Text Files",
-            accept: { "text/plain": [".txt"] },
-          },
-        ],
-      };
-
-      const handle = await window.showSaveFilePicker(opts);
-      const writable = await handle.createWritable();
-      await writable.write(fileContent);
-      await writable.close();
-
-      await showAlert(
-        `Allocation saved successfully as:<br><strong>${fileName}</strong>`,
-        "success",
-        "Allocation Saved",
-      );
-    } catch (err) {
-      // User cancelled the save dialog
-      if (err.name !== "AbortError") {
-        console.error("Save failed:", err);
-      }
-    }
-  } else {
-    // Fallback for browsers that don't support File System Access API
-    const blob = new Blob([fileContent], { type: "text/plain" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-
-    await showAlert(
-      `Allocation saved successfully as:<br><strong>${fileName}</strong>`,
-      "success",
-      "Allocation Saved",
-    );
-  }
+  await showAlert(
+    `Allocation saved successfully as:<br><strong>${fileName}</strong>`,
+    "success",
+    "Allocation Saved",
+  );
 }
 
 document.addEventListener("DOMContentLoaded", initializeApp);
